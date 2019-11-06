@@ -1,0 +1,96 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "title" : "Cirfood Payment Gateway",
+    "description" : "Payment Gateway Cirfood",
+    "version" : "1.0.0"
+  },
+  "tags" : [ {
+    "name" : "App Services"
+  }, {
+    "name" : "Merchant Services"
+  } ],
+  "paths" : {
+    "/payment-instruments" : {
+      "get" : {
+        "tags" : [ "App Services" ],
+        "summary" : "Return a list of instruments",
+        "description" : "This service returns a list of instruments saved in MS DB with their details. The service retrieves these informations with userId found in JWT",
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Successfully returned a list of instruments",
+            "schema" : {
+              "allOf" : [ {
+                "$ref" : "#/definitions/StandardResponse"
+              }, {
+                "$ref" : "#/definitions/Instruments"
+              } ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "StandardResponse" : {
+      "required" : [ "code", "message" ],
+      "type" : "object",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "example" : "0000"
+        },
+        "message" : {
+          "type" : "string",
+          "example" : "OK"
+        }
+      }
+    },
+    "Instruments" : {
+      "type" : "object",
+      "properties" : {
+        "instruments" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Instrument"
+          }
+        }
+      }
+    },
+    "Instrument" : {
+      "required" : [ "idInstrument", "aliasPan", "obscuredPan", "expiryDate", "circuit" ],
+      "type" : "object",
+      "properties" : {
+        "idInstrument" : {
+          "type" : "string",
+          "description" : "Card id",
+          "example" : "80eebc00-f5ee-45e1-b910-0c8c62199c84"
+        },
+        "aliasPan" : {
+          "type" : "string",
+          "description" : "Generated token during card storage",
+          "example" : "0000462387756794467"
+        },
+        "obscuredPan" : {
+          "type" : "string",
+          "description" : "Obscured pan",
+          "example" : "534223xxxxxx1234"
+        },
+        "expiryDate" : {
+          "type" : "string",
+          "description" : "Expiry date",
+          "example" : "2112"
+        },
+        "circuit" : {
+          "type" : "string",
+          "description" : "Circuit",
+          "example" : "02"
+        }
+      }
+    }
+  },
+  "host" : "virtserver.swaggerhub.com",
+  "basePath" : "/m.pessotto/CirfoodPaymentGatewayAPI2.0/1.0.0",
+  "schemes" : [ "https" ]
+}
